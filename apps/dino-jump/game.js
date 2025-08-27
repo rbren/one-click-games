@@ -109,30 +109,18 @@ class Ground extends GameObject {
   constructor(x, y) {
     super(x, y);
     this.addState('default', groundSprite);
-    this.speed = -100;
   }
   
-  update(buttonState, collisions) {
-    this.x += this.speed * (1/60);
-    
-    // Reset position for infinite scrolling
-    if (this.x < -320) {
-      this.x = 0;
-    }
-    
-    super.update(buttonState);
-  }
+  // Ground doesn't move - no update method needed
 }
 
 // Game initialization
 const dino = new Dino(80, 50);
 engine.addObject(dino);
 
-// Create ground
-const ground1 = new Ground(0, 20);
-const ground2 = new Ground(320, 20);
-engine.addObject(ground1);
-engine.addObject(ground2);
+// Create static ground
+const ground = new Ground(0, 20);
+engine.addObject(ground);
 
 // Obstacle spawning
 let obstacleTimer = 0;
