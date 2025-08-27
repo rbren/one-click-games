@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-Click Games - Play Instantly!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+        }
+
+        .game-card h3 {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .game-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .play-button:hover {
+            background: linear-gradient(135deg, #ee5a52, #ff6b6b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .no-games {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 One-Click Games</h1>
+        <p>Instant fun, no downloads required! Click and play amazing games right in your browser.</p>
+    </div>
+
+    <div class="container">
+        <div id="loading" class="loading">
+            Loading games... 🎯
+        </div>
+        
+        <div id="games-container" class="games-grid" style="display: none;">
+            <!-- Games will be loaded here -->
+        </div>
+        
+        <div id="no-games" class="no-games" style="display: none;">
+            No games found. Check back soon for new additions! 🚀
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 One-Click Games. Built with ❤️ for instant gaming fun!</p>
+    </div>
+
+    <script>
+        // This will be replaced by the build script with actual game data
+        const GAMES_DATA = [
+          {
+                    "title": "Hello World",
+                    "description": "A simple interactive hello world game to get you started. Click the button to see random encouraging messages!",
+                    "author": "One-Click Games",
+                    "version": "1.0.0",
+                    "tags": [
+                              "beginner",
+                              "interactive",
+                              "demo"
+                    ],
+                    "difficulty": "easy",
+                    "playTime": "1 minute",
+                    "path": "hello-world"
+          }
+];
+
+        function loadGames() {
+            const loadingElement = document.getElementById('loading');
+            const gamesContainer = document.getElementById('games-container');
+            const noGamesElement = document.getElementById('no-games');
+
+            // Simulate loading delay
+            setTimeout(() => {
+                loadingElement.style.display = 'none';
+                
+                if (GAMES_DATA.length === 0) {
+                    noGamesElement.style.display = 'block';
+                    return;
+                }
+
+                gamesContainer.style.display = 'grid';
+                
+                GAMES_DATA.forEach(game => {
+                    const gameCard = createGameCard(game);
+                    gamesContainer.appendChild(gameCard);
+                });
+            }, 500);
+        }
+
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            
+            const tags = game.tags ? game.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
+            const playTime = game.playTime ? `⏱️ ${game.playTime}` : '';
+            const difficulty = game.difficulty ? `📊 ${game.difficulty}` : '';
+            
+            card.innerHTML = `
+                <h3>${game.title}</h3>
+                <p>${game.description}</p>
+                <div class="game-meta">
+                    ${tags}
+                </div>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem; font-size: 0.9rem; color: #888;">
+                    ${playTime ? `<span>${playTime}</span>` : ''}
+                    ${difficulty ? `<span>${difficulty}</span>` : ''}
+                </div>
+                <a href="${game.path}/" class="play-button">🎮 Play Now</a>
+            `;
+            
+            return card;
+        }
+
+        // Load games when page loads
+        document.addEventListener('DOMContentLoaded', loadGames);
+    </script>
+</body>
+</html>
