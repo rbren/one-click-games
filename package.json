@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest",
     "build": "tsc",
+    "build:demo": "node scripts/build-demo.js",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
     "test:run": "vitest run",
