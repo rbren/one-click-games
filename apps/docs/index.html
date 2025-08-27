@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-Click Games Engine Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: monospace;
+            background: white;
+            color: black;
+            line-height: 1.4;
+        }
+
+        .header {
+            border-bottom: 4px solid black;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+        }
+
+        .nav {
+            border-bottom: 2px solid black;
+            padding: 1rem 2rem;
+            background: black;
+            color: white;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 2rem;
+            font-weight: bold;
+        }
+
+        .nav a:hover {
+            background: white;
+            color: black;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            border: 4px solid black;
+            margin-bottom: 2rem;
+            background: white;
+        }
+
+        .section-header {
+            background: black;
+            color: white;
+            padding: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.25rem;
+        }
+
+        code {
+            background: black;
+            color: white;
+            padding: 0.2rem 0.4rem;
+            font-family: monospace;
+        }
+
+        pre {
+            background: black;
+            color: white;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border: 2px solid black;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .method-list {
+            border: 2px solid black;
+            margin: 1rem 0;
+        }
+
+        .method {
+            border-bottom: 1px solid black;
+            padding: 1rem;
+        }
+
+        .method:last-child {
+            border-bottom: none;
+        }
+
+        .method-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            background: black;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            background: white;
+            color: black;
+            border: 4px solid black;
+            padding: calc(1rem - 4px) calc(2rem - 4px);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+
+            .nav {
+                padding: 1rem;
+            }
+
+            .nav a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ONE-CLICK GAMES ENGINE</h1>
+        <p>DOCUMENTATION</p>
+    </div>
+
+    <div class="nav">
+        <a href="../">← BACK TO GAMES</a>
+        <a href="#overview">OVERVIEW</a>
+        <a href="#architecture">ARCHITECTURE</a>
+        <a href="#objects">OBJECTS</a>
+        <a href="#collision">COLLISION</a>
+        <a href="#engine">ENGINE</a>
+        <a href="#implementation">IMPLEMENTATION</a>
+        <a href="#examples">EXAMPLES</a>
+    </div>
+
+    <div class="container">
+        <div class="section" id="overview">
+            <div class="section-header">OVERVIEW</div>
+            <div class="section-content">
+                <p>A minimalist JavaScript game engine for single-button games with black/white pixel graphics and pixel-perfect collision detection.</p>
+                
+                <h3>KEY FEATURES</h3>
+                <ul>
+                    <li>Single button input (space, click, touch)</li>
+                    <li>Black and white pixel graphics only</li>
+                    <li>Pixel-perfect collision detection</li>
+                    <li>60fps frame-based rendering</li>
+                    <li>Built-in physics system</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="architecture">
+            <div class="section-header">CORE ARCHITECTURE</div>
+            <div class="section-content">
+                <h2>DISPLAY SYSTEM</h2>
+                <ul>
+                    <li><strong>Canvas:</strong> Fixed-size pixel grid (e.g., 320x240, 640x480)</li>
+                    <li><strong>Graphics:</strong> Only black (1) and white (0) pixels</li>
+                    <li><strong>Coordinate System:</strong> Origin (0,0) at bottom-left corner</li>
+                    <li><strong>Rendering:</strong> 60fps frame-based rendering</li>
+                </ul>
+
+                <h2>INPUT SYSTEM</h2>
+                <p><strong>Single Button:</strong> Space bar, mouse click, or touch</p>
+                
+                <h3>Button States:</h3>
+                <div class="method-list">
+                    <div class="method">
+                        <div class="method-name">PRESSED</div>
+                        <p>Fired once when button transitions from up to down</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">DOWN</div>
+                        <p>Continuous state while button is held</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">RELEASED</div>
+                        <p>Fired once when button transitions from down to up</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">UP</div>
+                        <p>Continuous state while button is not held</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="objects">
+            <div class="section-header">GAME OBJECTS</div>
+            <div class="section-content">
+                <h2>GAMEOBJECT STRUCTURE</h2>
+                <pre><code>{
+  x, y,                    // position (bottom-left corner)
+  vx, vy,                  // velocity (pixels/second)
+  ax, ay,                  // acceleration (pixels/second²)
+  currentState,            // current sprite state name
+  states: {},              // state name -> sprite mapping
+  active,                  // whether object is updated/rendered
+  layer                    // rendering order (higher = front)
+}</code></pre>
+
+                <h2>SPRITE STRUCTURE</h2>
+                <pre><code>{
+  width, height,           // dimensions in pixels
+  pixels                   // 2D array: pixels[y][x] = 0 (white) or 1 (black)
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section" id="collision">
+            <div class="section-header">COLLISION DETECTION</div>
+            <div class="section-content">
+                <ul>
+                    <li><strong>Method:</strong> Pixel-perfect collision only</li>
+                    <li><strong>Check:</strong> Two objects collide when any black pixel from one sprite overlaps any black pixel from another sprite</li>
+                    <li><strong>Optimization:</strong> Bounding box check first, then pixel-by-pixel</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="engine">
+            <div class="section-header">GAME ENGINE CORE</div>
+            <div class="section-content">
+                <h2>ENGINE STRUCTURE</h2>
+                <pre><code>{
+  canvas, ctx,             // HTML5 canvas and context
+  width, height,           // game dimensions
+  objects: [],             // array of game objects
+  score, lives,            // game state variables
+  gameState,               // 'playing', 'paused', 'gameOver'
+  buttonState: {           // current input state
+    pressed, down, released, up
+  }
+}</code></pre>
+
+                <h2>CORE METHODS</h2>
+                <div class="method-list">
+                    <div class="method">
+                        <div class="method-name">addObject(obj)</div>
+                        <p>Add object to game</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">removeObject(obj)</div>
+                        <p>Remove object from game</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">drawSprite(sprite, x, y)</div>
+                        <p>Draw sprite at world coordinates</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">update(dt)</div>
+                        <p>Update all objects and check collisions</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">render()</div>
+                        <p>Draw everything to canvas</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">start()</div>
+                        <p>Begin game loop</p>
+                    </div>
+                    <div class="method">
+                        <div class="method-name">stop()</div>
+                        <p>End game loop</p>
+                    </div>
+                </div>
+
+                <h2>PHYSICS INTEGRATION</h2>
+                <ul>
+                    <li>Objects automatically update position based on velocity and acceleration</li>
+                    <li>Physics formula: <code>position += velocity * dt + 0.5 * acceleration * dt²</code></li>
+                    <li>Final positions rounded to pixel boundaries</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="implementation">
+            <div class="section-header">GAME IMPLEMENTATION PATTERN</div>
+            <div class="section-content">
+                <h2>BASIC GAME STRUCTURE</h2>
+                <pre><code>// 1. Create engine
+const engine = new OneClickEngine('canvas', 320, 240);
+
+// 2. Create sprites
+const playerSprite = createSpriteFromAscii(`
+  ##
+ ####
+##  ##
+`);
+
+// 3. Create game objects
+class Player extends GameObject {
+  constructor(x, y) {
+    super(x, y);
+    this.addState('default', playerSprite);
+    this.ay = -500; // gravity
+  }
+  
+  update(dt, buttonState) {
+    if (buttonState.pressed) {
+      this.vy = 200; // jump
+    }
+    super.update(dt, buttonState);
+  }
+}
+
+// 4. Initialize game
+const player = new Player(50, 100);
+engine.addObject(player);
+
+// 5. Handle collisions
+engine.handleCollision = (obj1, obj2) => {
+  // Game-specific collision logic
+};
+
+// 6. Start game
+engine.start();</code></pre>
+
+                <h2>SPRITE CREATION HELPER</h2>
+                <pre><code>// Create sprite from ASCII art (# = black, space = white)
+createSpriteFromAscii(asciiString)</code></pre>
+            </div>
+        </div>
+
+        <div class="section" id="examples">
+            <div class="section-header">EXAMPLE GAME TYPES</div>
+            <div class="section-content">
+                <h2>FLAPPY BIRD STYLE</h2>
+                <ul>
+                    <li>Player has gravity (negative Y acceleration)</li>
+                    <li>Button press sets upward velocity</li>
+                    <li>Pipes move left automatically</li>
+                    <li>Collision with pipes = game over</li>
+                </ul>
+
+                <h2>CHROME DINO STYLE</h2>
+                <ul>
+                    <li>Player runs automatically (animated sprite states)</li>
+                    <li>Button press while on ground = jump (set Y velocity)</li>
+                    <li>Obstacles move left automatically</li>
+                    <li>Collision with obstacles = game over</li>
+                </ul>
+
+                <h2>HELICOPTER GAME STYLE</h2>
+                <ul>
+                    <li>Button held = upward acceleration</li>
+                    <li>Button released = downward acceleration (gravity)</li>
+                    <li>Walls/obstacles move left automatically</li>
+                    <li>Collision with walls = game over</li>
+                </ul>
+
+                <h2>PERFORMANCE NOTES</h2>
+                <ul>
+                    <li>All positions stored as floats but rendered at integer pixel positions</li>
+                    <li>Collision detection optimized with bounding box pre-check</li>
+                    <li>Objects rendered in layer order (back to front)</li>
+                    <li>Inactive objects automatically removed from update/render loops</li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="../" class="back-link">← BACK TO GAMES</a>
+    </div>
+</body>
+</html>
