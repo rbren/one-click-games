@@ -12,132 +12,101 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
+            font-family: monospace;
+            background: white;
+            color: black;
+            line-height: 1.4;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem 0;
+            border-bottom: 4px solid black;
+            padding: 2rem;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
             font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            margin-bottom: 1rem;
         }
 
         .header p {
-            font-size: 1.2rem;
-            color: #666;
+            font-size: 1rem;
             max-width: 600px;
             margin: 0 auto;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 3rem 2rem;
+            padding: 2rem;
         }
 
         .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            display: block;
             margin-top: 2rem;
         }
 
         .game-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
+            border: 4px solid black;
             padding: 2rem;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+            margin-bottom: 2rem;
+            background: white;
         }
 
         .game-card h3 {
             font-size: 1.5rem;
-            color: #667eea;
+            font-weight: bold;
             margin-bottom: 1rem;
         }
 
         .game-card p {
-            color: #666;
-            line-height: 1.6;
             margin-bottom: 1.5rem;
         }
 
         .game-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
             margin-bottom: 1.5rem;
         }
 
         .tag {
-            background: #667eea;
+            background: black;
             color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
+            padding: 0.25rem 0.5rem;
+            margin-right: 0.5rem;
             font-size: 0.8rem;
-            font-weight: 500;
+            display: inline-block;
         }
 
         .play-button {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            background: black;
             color: white;
             border: none;
             padding: 1rem 2rem;
-            border-radius: 25px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
             text-decoration: none;
             display: inline-block;
-            text-align: center;
+            font-family: monospace;
         }
 
         .play-button:hover {
-            background: linear-gradient(135deg, #ee5a52, #ff6b6b);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+            background: white;
+            color: black;
+            border: 4px solid black;
+            padding: calc(1rem - 4px) calc(2rem - 4px);
         }
 
         .footer {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            border-top: 4px solid black;
             text-align: center;
             padding: 2rem;
             margin-top: 3rem;
-            color: white;
         }
 
-        .loading {
+        .loading, .no-games {
             text-align: center;
             padding: 3rem;
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .no-games {
-            text-align: center;
-            padding: 3rem;
-            color: white;
             font-size: 1.2rem;
         }
 
@@ -147,24 +116,20 @@
             }
             
             .container {
-                padding: 2rem 1rem;
-            }
-            
-            .games-grid {
-                grid-template-columns: 1fr;
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🎮 One-Click Games</h1>
-        <p>Instant fun, no downloads required! Click and play amazing games right in your browser.</p>
+        <h1>ONE-CLICK GAMES</h1>
+        <p>GAMES. CLICK. PLAY.</p>
     </div>
 
     <div class="container">
         <div id="loading" class="loading">
-            Loading games... 🎯
+            LOADING GAMES...
         </div>
         
         <div id="games-container" class="games-grid" style="display: none;">
@@ -172,12 +137,12 @@
         </div>
         
         <div id="no-games" class="no-games" style="display: none;">
-            No games found. Check back soon for new additions! 🚀
+            NO GAMES FOUND.
         </div>
     </div>
 
     <div class="footer">
-        <p>&copy; 2024 One-Click Games. Built with ❤️ for instant gaming fun!</p>
+        <p>ONE-CLICK GAMES 2024</p>
     </div>
 
     <script>
@@ -240,7 +205,7 @@
                     ${playTime ? `<span>${playTime}</span>` : ''}
                     ${difficulty ? `<span>${difficulty}</span>` : ''}
                 </div>
-                <a href="${game.path}/" class="play-button">🎮 Play Now</a>
+                <a href="${game.path}/" class="play-button">PLAY</a>
             `;
             
             return card;
