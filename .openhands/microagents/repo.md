@@ -29,3 +29,6 @@ A TypeScript-based game engine and platform for creating simple, interactive bro
 - HTML/browser-based game interface
 - Testing with Vitest
 - ESLint for code quality
+
+
+DO NOT RUN `npm test --silent` it will break your terminal
