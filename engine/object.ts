@@ -1,4 +1,4 @@
-export type Sprite = number[][];
+import { Sprite } from './sprite';
 
 export interface Renderer {
   drawSprite(sprite: Sprite, x: number, y: number): void;

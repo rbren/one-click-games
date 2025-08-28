@@ -5,8 +5,8 @@ import { InputManager } from './input';
 
 export type CollisionMap<T extends GameObject = GameObject> = Map<T, T[]>;
 
-type RafFn = (cb: (t: number) => void) => any;
-type CancelRafFn = (h: any) => void;
+type RafFn = (cb: (t: number) => void) => unknown;
+type CancelRafFn = (h: unknown) => void;
 
 export interface GameLoopOptions {
   targetFps?: number; // default 60
@@ -18,8 +18,8 @@ export interface GameLoopOptions {
 
 export class GameLoop {
   private objects: GameObject[] = [];
-  private renderer?: Renderer;
-  private input?: InputManager;
+  private renderer: Renderer | undefined;
+  private input: InputManager | undefined;
   private collisionDetector: CollisionDetector;
 
   private running = false;
@@ -29,7 +29,7 @@ export class GameLoop {
 
   private raf: RafFn;
   private caf: CancelRafFn | undefined;
-  private rafHandle: any = null;
+  private rafHandle: unknown = null;
   private now: () => number;
 
   constructor(
@@ -51,7 +51,7 @@ export class GameLoop {
     this.raf = params?.raf ?? ((cb) => {
       return setTimeout(() => cb(this.now()), this.timestepMs);
     });
-    this.caf = params?.caf ?? ((h) => clearTimeout(h as any));
+    this.caf = params?.caf ?? ((h) => clearTimeout(h as ReturnType<typeof setTimeout>));
 
     this.now = params?.now ?? (() =>
       typeof performance !== 'undefined' && performance.now
@@ -111,8 +111,8 @@ export class GameLoop {
     // Fixed update steps for stability
     while (this.accumulator >= this.timestepMs) {
       const collisions = this.collisionDetector.checkAllCollisions(
-        this.objects as any,
-      ) as unknown as CollisionMap;
+        this.objects,
+      ) as CollisionMap;
       this.updateObjects(this.objects, buttonState, collisions);
       this.handleInactiveObjects(this.objects);
       this.accumulator -= this.timestepMs;
@@ -134,8 +134,8 @@ export class GameLoop {
     collisions: CollisionMap,
   ): void {
     for (const obj of objects) {
-      const list = (collisions.get(obj as any) as GameObject[] | undefined) ?? [];
-      obj.update(buttonState, list as any);
+      const list = collisions.get(obj) ?? [];
+      obj.update(buttonState, list);
     }
   }
 

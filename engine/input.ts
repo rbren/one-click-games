@@ -44,40 +44,46 @@ export class InputManager {
     const gt: unknown = globalThis;
     if (isListenerTarget(gt)) list.push(gt);
 
-    const onKeyDown = (e: KeyEventLike) => {
-      const key = e.code ?? e.key;
+    const onKeyDown = (e: unknown) => {
+      const keyEvent = e as KeyEventLike;
+      const key = keyEvent.code ?? keyEvent.key;
       if (key === 'Space' || key === ' ' || key === 'Spacebar') {
         this.currentDown = true;
-        e.preventDefault?.();
+        keyEvent.preventDefault?.();
       }
     };
 
-    const onKeyUp = (e: KeyEventLike) => {
-      const key = e.code ?? e.key;
+    const onKeyUp = (e: unknown) => {
+      const keyEvent = e as KeyEventLike;
+      const key = keyEvent.code ?? keyEvent.key;
       if (key === 'Space' || key === ' ' || key === 'Spacebar') {
         this.currentDown = false;
-        e.preventDefault?.();
+        keyEvent.preventDefault?.();
       }
     };
 
-    const onMouseDown = (e: BasicEvent) => {
+    const onMouseDown = (e: unknown) => {
+      const mouseEvent = e as BasicEvent;
       this.currentDown = true;
-      e.preventDefault?.();
+      mouseEvent.preventDefault?.();
     };
 
-    const onMouseUp = (e: BasicEvent) => {
+    const onMouseUp = (e: unknown) => {
+      const mouseEvent = e as BasicEvent;
       this.currentDown = false;
-      e.preventDefault?.();
+      mouseEvent.preventDefault?.();
     };
 
-    const onTouchStart = (e: BasicEvent) => {
+    const onTouchStart = (e: unknown) => {
+      const touchEvent = e as BasicEvent;
       this.currentDown = true;
-      e.preventDefault?.();
+      touchEvent.preventDefault?.();
     };
 
-    const onTouchEnd = (e: BasicEvent) => {
+    const onTouchEnd = (e: unknown) => {
+      const touchEvent = e as BasicEvent;
       this.currentDown = false;
-      e.preventDefault?.();
+      touchEvent.preventDefault?.();
     };
 
     for (const t of list) {

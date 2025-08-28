@@ -2,7 +2,7 @@
   "name": "one-click-games",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "test": "vitest",
     "build": "tsc",
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/rbren/one-click-games#readme",
   "type": "module",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.41.0",
     "@typescript-eslint/parser": "^8.41.0",
