@@ -9,13 +9,18 @@ import { URL } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const APPS_DIR = path.join(__dirname, '..', 'apps');
+const ROOT_DIR = path.join(__dirname, '..');
+const APPS_DIR = path.join(ROOT_DIR, 'apps');
+const DIST_DIR = path.join(ROOT_DIR, 'dist');
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = Number(process.env.PORT || 12000);
 
 if (!fs.existsSync(APPS_DIR)) {
   console.error(`Apps directory not found at ${APPS_DIR}`);
   process.exit(1);
+}
+if (!fs.existsSync(DIST_DIR)) {
+  console.warn(`Warning: dist directory not found at ${DIST_DIR}. Run \"npm run build\" if your apps import from /dist.`);
 }
 
 const MIME_TYPES = {
@@ -58,23 +63,42 @@ function safeJoin(base, requestedPath) {
 }
 
 function resolvePath(urlPath) {
-  // Default to index.html at root
+  // Default to apps index.html at root
   if (urlPath === '/' || urlPath === '') return path.join(APPS_DIR, 'index.html');
 
-  let target = safeJoin(APPS_DIR, urlPath);
-  if (!target) return null;
+  // If request starts with /dist/, serve from built dist under repo root
+  if (urlPath === '/dist' || urlPath.startsWith('/dist/')) {
+    const distSub = urlPath.replace(/^\/dist\/?/, '');
+    const t = safeJoin(DIST_DIR, distSub);
+    if (!t) return null;
+    try {
+      const st = fs.existsSync(t) ? fs.statSync(t) : null;
+      if (st && st.isDirectory()) {
+        const indexPath = path.join(t, 'index.html');
+        if (fs.existsSync(indexPath)) return indexPath;
+        return null;
+      }
+      if (st && st.isFile()) return t;
+      const htmlAttempt = t + '.html';
+      if (fs.existsSync(htmlAttempt) && fs.statSync(htmlAttempt).isFile()) return htmlAttempt;
+    } catch (_) {
+      return null;
+    }
+    return null;
+  }
 
+  // Serve any other path from apps/ by default so /dino-jump/ works
+  const appPath = safeJoin(APPS_DIR, urlPath);
+  if (!appPath) return null;
   try {
-    const stat = fs.existsSync(target) ? fs.statSync(target) : null;
-    if (stat && stat.isDirectory()) {
-      const indexPath = path.join(target, 'index.html');
+    const st = fs.existsSync(appPath) ? fs.statSync(appPath) : null;
+    if (st && st.isDirectory()) {
+      const indexPath = path.join(appPath, 'index.html');
       if (fs.existsSync(indexPath)) return indexPath;
       return null;
     }
-    if (stat && stat.isFile()) return target;
-
-    // If no exact match, try adding .html (common for static sites)
-    const htmlAttempt = target + '.html';
+    if (st && st.isFile()) return appPath;
+    const htmlAttempt = appPath + '.html';
     if (fs.existsSync(htmlAttempt) && fs.statSync(htmlAttempt).isFile()) return htmlAttempt;
   } catch (_) {
     return null;
@@ -129,8 +153,10 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`Static server running at http://${HOST}:${PORT}`);
-  console.log(`Serving directory: ${APPS_DIR}`);
-  console.log('Examples:');
-  console.log(`  - / (homepage)`);
-  console.log(`  - /hello-world/ (game)`);
+  console.log(`Serving dev root: ${ROOT_DIR}`);
+  console.log('Routes:');
+  console.log('  - /            -> apps/index.html');
+  console.log('  - /apps/*      -> apps/*');
+  console.log('  - /dist/*      -> dist/* (built output)');
+  console.log('  - /*           -> repository root fallback');
 });
