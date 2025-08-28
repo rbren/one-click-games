@@ -1,7 +1,0 @@
-Static server running at http://0.0.0.0:12000
-Serving dev root: /workspace/project/one-click-games
-Routes:
-  - /            -> apps/index.html
-  - /apps/*      -> apps/*
-  - /dist/*      -> dist/* (built output)
-  - /*           -> repository root fallback

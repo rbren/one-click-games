@@ -13,3 +13,4 @@ coverage
 !vitest.config.ts
 !eslint.config.js
 !scripts/*.js
+server.log

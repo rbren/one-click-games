@@ -32,3 +32,28 @@ A TypeScript-based game engine and platform for creating simple, interactive bro
 
 
 DO NOT RUN `npm test --silent` it will break your terminal
+
+## Local Dev Server for apps/
+
+A minimal Node server is included to serve the repo in a way compatible with GitHub Pages, so apps/ can import from ../dist/src/index.js without changes.
+
+Quick start:
+- Install deps and build once:
+  - npm ci
+  - npm run build
+- Populate the apps homepage (optional):
+  - npm run build:demo
+- Start the server on 0.0.0.0:12000:
+  - npm run serve:apps
+
+Behavior:
+- / maps to apps/index.html (apps homepage)
+- /dino-jump/ and /hello-world/ load those apps from apps/
+- /dist/* serves built files from the repo’s dist/
+- CORS is open and iframe embedding is allowed for easy embedding
+
+Remote access:
+- The server binds to 0.0.0.0; in this environment use the provided host:
+  - https://work-1-pcnqinjkcisigsbh.prod-runtime.all-hands.dev:12000/
+
+
