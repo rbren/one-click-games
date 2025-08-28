@@ -115,7 +115,9 @@ class Ground extends GameObject {
     this.addState('default', sprites.ground);
   }
   
-  // Ground doesn't move - no update method needed
+  update(buttonState, collisions) {
+    // Ground doesn't move - empty update method
+  }
 }
 
 // Initialize engine
