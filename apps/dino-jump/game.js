@@ -10,8 +10,10 @@ const OBSTACLE_SPEED = -200;
 const OBSTACLE_SPAWN_X = 640;
 const OBSTACLE_SPAWN_INTERVAL = 2;
 
-// Dino sprites
-const dinoRunSprite = createSpriteFromAscii(`
+// Sprite creation functions
+function createSprites() {
+  return {
+    dinoRun: createSpriteFromAscii(`
     ####
    ######
    ##  ##
@@ -20,9 +22,8 @@ const dinoRunSprite = createSpriteFromAscii(`
   ##   ##
   ##   ##
   #     #
-`);
-
-const dinoJumpSprite = createSpriteFromAscii(`
+`),
+    dinoJump: createSpriteFromAscii(`
     ####
    ######
    ##  ##
@@ -31,10 +32,8 @@ const dinoJumpSprite = createSpriteFromAscii(`
   ##   ##
  ##     ##
 ##       ##
-`);
-
-// Obstacle sprites
-const cactusSprite = createSpriteFromAscii(`
+`),
+    cactus: createSpriteFromAscii(`
   ##
   ##
   ##
@@ -43,27 +42,26 @@ const cactusSprite = createSpriteFromAscii(`
 ####
 ####
 ####
-`);
-
-const rockSprite = createSpriteFromAscii(`
+`),
+    rock: createSpriteFromAscii(`
  ####
 ######
 ######
  ####
-`);
-
-// Ground sprite
-const groundSprite = createSpriteFromAscii(`
+`),
+    ground: createSpriteFromAscii(`
 ################################
 ################################
-`);
+`)
+  };
+}
 
 // Dino player class
 class Dino extends GameObject {
-  constructor(x, y) {
+  constructor(x, y, sprites) {
     super(x, y);
-    this.addState('run', dinoRunSprite);
-    this.addState('jump', dinoJumpSprite);
+    this.addState('run', sprites.dinoRun);
+    this.addState('jump', sprites.dinoJump);
     this.isJumping = false;
     this.jumpVelocity = 0;
     this.groundY = y;
@@ -116,9 +114,9 @@ class Obstacle extends GameObject {
 
 // Ground class
 class Ground extends GameObject {
-  constructor(x, y) {
+  constructor(x, y, sprites) {
     super(x, y);
-    this.addState('default', groundSprite);
+    this.addState('default', sprites.ground);
   }
   
   // Ground doesn't move - no update method needed
@@ -129,18 +127,21 @@ const engine = new OneClickEngine();
 const canvas = document.getElementById('gameCanvas');
 engine.init(canvas, 640, 240);
 
+// Create sprites
+const sprites = createSprites();
+
 // Game initialization
-const dino = new Dino(DINO_X_POSITION, DINO_GROUND_Y);
+const dino = new Dino(DINO_X_POSITION, DINO_GROUND_Y, sprites);
 engine.addObject(dino);
 
 // Create static ground
-const ground = new Ground(0, GROUND_Y);
+const ground = new Ground(0, GROUND_Y, sprites);
 engine.addObject(ground);
 
 // Obstacle spawning
 let obstacleTimer = 0;
 const spawnObstacle = () => {
-  const obstacles = [cactusSprite, rockSprite];
+  const obstacles = [sprites.cactus, sprites.rock];
   const randomObstacle = obstacles[Math.floor(Math.random() * obstacles.length)];
   const obstacle = new Obstacle(OBSTACLE_SPAWN_X, DINO_GROUND_Y, randomObstacle);
   engine.addObject(obstacle);
