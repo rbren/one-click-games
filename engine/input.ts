@@ -5,10 +5,28 @@ export interface ButtonState {
   up: boolean;
 }
 
-/** Minimal event target type to avoid depending on DOM lib types */
+// Minimal event target type to avoid depending on DOM lib types
+type AddEventListener = (
+  type: string,
+  listener: (ev: unknown) => void,
+  options?: unknown
+) => void;
+
 type ListenerTarget = {
-  addEventListener?: (...args: any[]) => void;
+  addEventListener?: AddEventListener;
 };
+
+type BasicEvent = { preventDefault?: () => void };
+
+type KeyEventLike = BasicEvent & Partial<{ code: string; key: string }>;
+
+function isListenerTarget(t: unknown): t is ListenerTarget {
+  return (
+    typeof t === 'object' &&
+    t !== null &&
+    typeof (t as { addEventListener?: unknown }).addEventListener === 'function'
+  );
+}
 
 export class InputManager {
   private currentDown = false;
@@ -19,50 +37,47 @@ export class InputManager {
   setupEventListeners(targets?: ListenerTarget | ListenerTarget[]): void {
     if (this.attached) return;
     const list: ListenerTarget[] = [];
-    const g: any = typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? (globalThis as any) : undefined);
-    const d: any = typeof document !== 'undefined' ? document : undefined;
 
     if (Array.isArray(targets)) list.push(...targets);
     else if (targets) list.push(targets);
-    else {
-      if (g) list.push(g);
-      if (d) list.push(d);
-    }
 
-    const onKeyDown = (e: any) => {
-      const key = e?.code ?? e?.key;
+    const gt: unknown = globalThis;
+    if (isListenerTarget(gt)) list.push(gt);
+
+    const onKeyDown = (e: KeyEventLike) => {
+      const key = e.code ?? e.key;
       if (key === 'Space' || key === ' ' || key === 'Spacebar') {
         this.currentDown = true;
-        e?.preventDefault?.();
+        e.preventDefault?.();
       }
     };
 
-    const onKeyUp = (e: any) => {
-      const key = e?.code ?? e?.key;
+    const onKeyUp = (e: KeyEventLike) => {
+      const key = e.code ?? e.key;
       if (key === 'Space' || key === ' ' || key === 'Spacebar') {
         this.currentDown = false;
-        e?.preventDefault?.();
+        e.preventDefault?.();
       }
     };
 
-    const onMouseDown = (e: any) => {
+    const onMouseDown = (e: BasicEvent) => {
       this.currentDown = true;
-      e?.preventDefault?.();
+      e.preventDefault?.();
     };
 
-    const onMouseUp = (e: any) => {
+    const onMouseUp = (e: BasicEvent) => {
       this.currentDown = false;
-      e?.preventDefault?.();
+      e.preventDefault?.();
     };
 
-    const onTouchStart = (e: any) => {
+    const onTouchStart = (e: BasicEvent) => {
       this.currentDown = true;
-      e?.preventDefault?.();
+      e.preventDefault?.();
     };
 
-    const onTouchEnd = (e: any) => {
+    const onTouchEnd = (e: BasicEvent) => {
       this.currentDown = false;
-      e?.preventDefault?.();
+      e.preventDefault?.();
     };
 
     for (const t of list) {
@@ -70,8 +85,8 @@ export class InputManager {
       t.addEventListener?.('keyup', onKeyUp);
       t.addEventListener?.('mousedown', onMouseDown);
       t.addEventListener?.('mouseup', onMouseUp);
-      t.addEventListener?.('touchstart', onTouchStart, { passive: false } as any);
-      t.addEventListener?.('touchend', onTouchEnd, { passive: false } as any);
+      t.addEventListener?.('touchstart', onTouchStart, { passive: false });
+      t.addEventListener?.('touchend', onTouchEnd, { passive: false });
     }
 
     this.attached = true;
