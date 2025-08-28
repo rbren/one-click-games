@@ -1,0 +1,9 @@
+{
+  "title": "Dino Jump",
+  "description": "A Chrome dino-style jumping game. Press space to jump over obstacles as they scroll from right to left!",
+  "author": "One-Click Games",
+  "version": "1.0.0",
+  "tags": ["arcade", "jumping", "endless"],
+  "difficulty": "medium",
+  "playTime": "endless"
+}
