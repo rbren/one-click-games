@@ -1,3 +1,5 @@
+import { OneClickEngine, GameObject, createSpriteFromAscii } from '../dist/src/index.js';
+
 // Game constants
 const DINO_X_POSITION = 80;
 const DINO_GROUND_Y = 50;
@@ -69,7 +71,7 @@ class Dino extends GameObject {
   
   update(dt, buttonState, collisions) {
     // Jump logic
-    if (buttonState === BUTTON_PRESSED && !this.isJumping) {
+    if (buttonState.pressed && !this.isJumping) {
       this.isJumping = true;
       this.jumpVelocity = JUMP_VELOCITY;
       this.setState('jump');
@@ -121,6 +123,11 @@ class Ground extends GameObject {
   
   // Ground doesn't move - no update method needed
 }
+
+// Initialize engine
+const engine = new OneClickEngine();
+const canvas = document.getElementById('gameCanvas');
+engine.init(canvas, 640, 240);
 
 // Game initialization
 const dino = new Dino(DINO_X_POSITION, DINO_GROUND_Y);

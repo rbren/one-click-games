@@ -1,4 +1,4 @@
-import { Sprite } from './sprite';
+import { Sprite } from './sprite.js';
 
 export type CollisionMap<T extends Collidable = Collidable> = Map<T, T[]>;
 

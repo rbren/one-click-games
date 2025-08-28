@@ -1,4 +1,4 @@
-import { Sprite } from './sprite';
+import { Sprite } from './sprite.js';
 
 export interface Renderer {
   drawSprite(sprite: Sprite, x: number, y: number): void;
