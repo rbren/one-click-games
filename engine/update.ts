@@ -120,6 +120,8 @@ export class GameLoop {
 
     // Render after updates
     if (this.renderer) {
+      // Clear the frame before rendering to avoid trails
+      this.renderer.clear();
       const sorted = this.sortObjectsByLayer(this.objects);
       for (const obj of sorted) obj.render(this.renderer);
     }
