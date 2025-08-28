@@ -1,22 +1,25 @@
 import { OneClickEngine, GameObject, createSpriteFromAscii } from '../dist/src/index.js';
 
-const standSprite = createSpriteFromAscii(`
+function createSprites() {
+  return {
+    stand: createSpriteFromAscii(`
   ##
  ####
 ##  ##
-`);
-
-const jumpSprite = createSpriteFromAscii(`
+`),
+    jump: createSpriteFromAscii(`
   ##
  ####
 ####
-`);
+`)
+  };
+}
 
 class Player extends GameObject {
-  constructor(x, y) {
+  constructor(x, y, sprites) {
     super(x, y);
-    this.addState('stand', standSprite);
-    this.addState('jump', jumpSprite);
+    this.addState('stand', sprites.stand);
+    this.addState('jump', sprites.jump);
   }
   
   update(buttonState, collisions) {
@@ -41,7 +44,8 @@ document.body.appendChild(canvas);
 
 engine.init(canvas, 400, 300);
 
-const player = new Player(50, 100);
+const sprites = createSprites();
+const player = new Player(50, 100, sprites);
 engine.addObject(player);
 
 engine.start();
