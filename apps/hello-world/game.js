@@ -29,7 +29,6 @@ class Player extends GameObject {
     if (buttonState.pressed) {
       this.x += 100
     }
-    super.update(buttonState);
   }
 }
 
