@@ -1,6 +1,7 @@
 import { Sprite } from './sprite.js';
 
 export interface Renderer {
+  clear(): void;
   drawSprite(sprite: Sprite, x: number, y: number): void;
 }
 
