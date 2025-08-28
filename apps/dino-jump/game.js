@@ -67,7 +67,7 @@ class Dino extends GameObject {
     this.groundY = y;
   }
   
-  update(dt, buttonState, collisions) {
+  update(buttonState, collisions) {
     // Jump logic
     if (buttonState.pressed && !this.isJumping) {
       this.isJumping = true;
@@ -75,10 +75,10 @@ class Dino extends GameObject {
       this.setState('jump');
     }
     
-    // Apply gravity and update position
+    // Apply gravity and update position (using frame-based physics)
     if (this.isJumping) {
-      this.jumpVelocity += GRAVITY * dt;
-      this.y += this.jumpVelocity * dt;
+      this.jumpVelocity += GRAVITY * 0.016; // Assume ~60fps (16ms per frame)
+      this.y += this.jumpVelocity * 0.016;
       
       // Land on ground
       if (this.y <= this.groundY) {
@@ -88,8 +88,6 @@ class Dino extends GameObject {
         this.setState('run');
       }
     }
-    
-    super.update(dt, buttonState);
   }
 }
 
@@ -100,15 +98,13 @@ class Obstacle extends GameObject {
     this.addState('default', sprite);
   }
   
-  update(dt, buttonState, collisions) {
-    this.x += OBSTACLE_SPEED * dt;
+  update(buttonState, collisions) {
+    this.x += OBSTACLE_SPEED * 0.016; // Frame-based movement
     
     // Remove obstacle when it goes off screen
     if (this.x < -50) {
       this.active = false;
     }
-    
-    super.update(dt, buttonState);
   }
 }
 
@@ -138,26 +134,44 @@ engine.addObject(dino);
 const ground = new Ground(0, GROUND_Y, sprites);
 engine.addObject(ground);
 
-// Obstacle spawning
-let obstacleTimer = 0;
-const spawnObstacle = () => {
-  const obstacles = [sprites.cactus, sprites.rock];
-  const randomObstacle = obstacles[Math.floor(Math.random() * obstacles.length)];
-  const obstacle = new Obstacle(OBSTACLE_SPAWN_X, DINO_GROUND_Y, randomObstacle);
-  engine.addObject(obstacle);
-};
-
-// Game loop with obstacle spawning
-const originalUpdate = engine.update;
-engine.update = function(dt) {
-  originalUpdate.call(this, dt);
-  
-  obstacleTimer += dt;
-  if (obstacleTimer > OBSTACLE_SPAWN_INTERVAL) {
-    spawnObstacle();
-    obstacleTimer = 0;
+// Obstacle spawning system
+class ObstacleSpawner extends GameObject {
+  constructor(sprites) {
+    super(-100, -100); // Off-screen position
+    this.sprites = sprites;
+    this.timer = 0;
+    this.spawnInterval = OBSTACLE_SPAWN_INTERVAL * 60; // Convert to frames (assuming 60fps)
   }
-};
+  
+  update(buttonState, collisions) {
+    this.timer++;
+    if (this.timer >= this.spawnInterval) {
+      this.spawnObstacle();
+      this.timer = 0;
+    }
+  }
+  
+  spawnObstacle() {
+    const obstacles = [this.sprites.cactus, this.sprites.rock];
+    const randomObstacle = obstacles[Math.floor(Math.random() * obstacles.length)];
+    const obstacle = new Obstacle(OBSTACLE_SPAWN_X, DINO_GROUND_Y, randomObstacle);
+    // We need a reference to the engine to add objects
+    if (window.gameEngine) {
+      window.gameEngine.addObject(obstacle);
+    }
+  }
+  
+  render(renderer) {
+    // Don't render anything
+  }
+}
+
+// Make engine globally accessible for spawner
+window.gameEngine = engine;
+
+// Add obstacle spawner
+const spawner = new ObstacleSpawner(sprites);
+engine.addObject(spawner);
 
 // Collision handling
 engine.handleCollision = (obj1, obj2) => {
