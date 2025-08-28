@@ -4,7 +4,7 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import prettier from 'eslint-config-prettier';
 
 export default [
-  { ignores: ['dist', 'node_modules', 'apps'] },
+  { ignores: ['dist', 'node_modules', 'apps', '**/*.js', '**/*.d.ts', '**/*.js.map', '**/*.d.ts.map'] },
   js.configs.recommended,
   {
     files: ['**/*.js'],
@@ -25,7 +25,13 @@ export default [
       parser: tsParser,
       ecmaVersion: 'latest',
       sourceType: 'module',
-      globals: { console: 'readonly' }
+      globals: { 
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        performance: 'readonly',
+        globalThis: 'readonly'
+      }
     },
     plugins: {
       '@typescript-eslint': tsPlugin

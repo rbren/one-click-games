@@ -1,3 +1,2 @@
-export function startEngine() {
-  console.log('hello world');
-}
+// Re-export everything from the engine
+export * from '../engine/index';

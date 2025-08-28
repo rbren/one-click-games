@@ -2,7 +2,7 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
 
     // Environment Settings
@@ -50,6 +50,6 @@
     "pretty": true,
     "allowSyntheticDefaultImports": true,
   },
-  "include": ["src"],
+  "include": ["src", "engine"],
   "exclude": ["test", "**/*.test.ts", "node_modules", "dist", "vitest.config.ts"]
 }
