@@ -1,2 +1,2 @@
 // Re-export everything from the engine
-export * from '../engine/index';
+export * from '../engine/index.js';

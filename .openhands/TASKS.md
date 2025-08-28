@@ -1,11 +1,15 @@
 # Task List
 
-1. ✅ Examine existing engine modules to understand the architecture
+1. ✅ Examine current example.html and apps/ directory structure
 
-2. ✅ Implement engine/index.ts according to the specification
+2. ✅ Analyze the import strategy used in example.html
 
-3. ✅ Ensure the whole library builds successfully
+3. ✅ Update examples in apps/ directory to use ES6 module imports like example.html
 
-4. ✅ Run tests to verify implementation works correctly
+4. ✅ Ensure GitHub Pages compatibility for the updated imports
+
+5. ✅ Remove example.html file
+
+6. ✅ Test that the updated apps still work correctly
 
 

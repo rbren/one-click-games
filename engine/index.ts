@@ -1,8 +1,8 @@
-import { GameObject } from './object';
-import { CanvasRenderer } from './canvas';
-import { InputManager } from './input';
-import { GameLoop } from './update';
-import { CollisionDetector } from './collision';
+import { GameObject } from './object.js';
+import { CanvasRenderer } from './canvas.js';
+import { InputManager } from './input.js';
+import { GameLoop } from './update.js';
+import { CollisionDetector } from './collision.js';
 
 export class OneClickEngine {
   private gameLoop: GameLoop;
@@ -85,15 +85,15 @@ export class OneClickEngine {
 }
 
 // Re-export key classes and functions for convenience
-export { GameObject } from './object';
-export { Sprite, createSpriteFromAscii } from './sprite';
-export { CanvasRenderer } from './canvas';
-export { InputManager } from './input';
-export { GameLoop } from './update';
-export { CollisionDetector } from './collision';
+export { GameObject } from './object.js';
+export { Sprite, createSpriteFromAscii } from './sprite.js';
+export { CanvasRenderer } from './canvas.js';
+export { InputManager } from './input.js';
+export { GameLoop } from './update.js';
+export { CollisionDetector } from './collision.js';
 
 // Export types
-export type { ButtonState } from './input';
-export type { Renderer, ButtonState as ObjectButtonState } from './object';
-export type { CollisionMap } from './update';
-export type { Collidable } from './collision';
+export type { ButtonState } from './input.js';
+export type { Renderer, ButtonState as ObjectButtonState } from './object.js';
+export type { CollisionMap } from './update.js';
+export type { Collidable } from './collision.js';

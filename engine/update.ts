@@ -1,7 +1,7 @@
-import type { Renderer, ButtonState as ObjButtonState } from './object';
-import { CollisionDetector } from './collision';
-import type { GameObject } from './object';
-import { InputManager } from './input';
+import type { Renderer, ButtonState as ObjButtonState } from './object.js';
+import { CollisionDetector } from './collision.js';
+import type { GameObject } from './object.js';
+import { InputManager } from './input.js';
 
 export type CollisionMap<T extends GameObject = GameObject> = Map<T, T[]>;
 
