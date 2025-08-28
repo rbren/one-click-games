@@ -1,15 +1,11 @@
 # Task List
 
-1. ✅ Examine current example.html and apps/ directory structure
-
-2. ✅ Analyze the import strategy used in example.html
-
-3. ✅ Update examples in apps/ directory to use ES6 module imports like example.html
-
-4. ✅ Ensure GitHub Pages compatibility for the updated imports
-
-5. ✅ Remove example.html file
-
-6. ✅ Test that the updated apps still work correctly
+1. ✅ Create a minimal static server to serve /apps directory
+scripts/serve-apps.js created
+2. ✅ Add npm script to run the server on 0.0.0.0:12000
+Added serve:apps script in package.json
+3. ✅ Start the server and verify content is served
+Server started on port 12000, verified homepage and hello-world responses
+4. 🔄 Provide usage instructions and URLs
 
 

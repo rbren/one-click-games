@@ -1,0 +1,5 @@
+Static server running at http://0.0.0.0:12000
+Serving directory: /workspace/project/one-click-games/apps
+Examples:
+  - / (homepage)
+  - /hello-world/ (game)
